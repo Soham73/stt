@@ -1,0 +1,54 @@
+#include <Excel.au3>
+#include <IE.au3>
+#include <MsgBoxConstants.au3>
+
+; Open local HTML form
+$oIE = _IECreate("file:///C:/Users/HP/Desktop/excel.html")
+Sleep(1000)
+
+; Fill form fields
+$oForm = _IEFormElementGetObjByName($oIE, "login_form")
+$oName = _IEFormElementGetObjByName($oForm, "name")
+_IEFormElementSetValue($oName, "mayuresh")
+
+$oRoll = _IEFormElementGetObjByName($oForm, "roll_no")
+_IEFormElementSetValue($oRoll, "38")
+
+Sleep(10000)
+
+; Open Excel
+$oExcel = _Excel_Open()
+$oWorkbook = _Excel_BookOpen($oExcel, "C:\Users\HP\Desktop\mayuresh\excelscrip.xlsx", 0)
+
+If @error = 1 Then
+    MsgBox(0, "Error", "Unable to create Excel object")
+    Exit
+ElseIf @error = 2 Then
+    MsgBox(0, "Error", "File doesn't exist")
+    Exit
+EndIf
+
+; Read name from Excel (cell A1)
+$sName = _Excel_RangeRead($oWorkbook, Default, "A1")
+_IEFormElementSetValue($oName, $sName)
+
+; Write name to B1
+_Excel_RangeWrite($oWorkbook, Default, $sName, "B1")
+
+; Read roll no from Excel (cell A2)
+$sRoll = _Excel_RangeRead($oWorkbook, Default, "A2")
+_IEFormElementSetValue($oRoll, $sRoll)
+
+; Write roll no to B2
+_Excel_RangeWrite($oWorkbook, Default, $sRoll, "B2")
+
+; Display output
+MsgBox(0, "Output", "Name: " & $sName & @CRLF & "Roll No: " & $sRoll)
+
+Sleep(1000)
+
+; Close Excel
+_Excel_Close($oExcel)
+
+; Optional: Quit IE
+_IEQuit($oIE)

@@ -1,0 +1,7 @@
+#include<MsgBoxConstants.au3>
+run("Notepad.exe")
+WinActivate("Notepad")
+Sleep(500)
+Send("hello from sybca")
+Sleep(5000)
+WinClose("Notepad")

@@ -1,0 +1,10 @@
+#include <MsgBoxConstants.au3>
+
+MsgBox($MB_OKCANCEL, "hello", "world")
+
+Run("calc.exe")
+WinWaitActive("Calculator")
+Sleep(5000)
+Send("2 + 2 * 5")
+Sleep(4000)
+WinClose("Calculator")
